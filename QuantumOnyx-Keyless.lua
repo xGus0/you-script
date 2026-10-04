@@ -65,16 +65,9 @@ local function Tween(obj, props, t, style, dir)
 end
 
 local function Protect(gui)
-	local env = (getgenv and getgenv()) or _G
-	if env.HIDEUI then
-		gui.Parent = env.HIDEUI
-	elseif gethui then
-		gui.Parent = gethui()
-	elseif syn and syn.protect_gui then
+	gui.Parent = game:GetService("CoreGui")
+	if syn and syn.protect_gui then
 		syn.protect_gui(gui)
-		gui.Parent = game:GetService("CoreGui")
-	else
-		gui.Parent = game:GetService("CoreGui")
 	end
 end
 
@@ -621,7 +614,7 @@ local function ShowKeyUI()
 		Tween(Card, { Size = UDim2.new(0, W * 0.65, 0, H * 0.65), BackgroundTransparency = 1 }, 0.20, Enum.EasingStyle.Quint, Enum.EasingDirection.In)
 		Tween(Backdrop, { BackgroundTransparency = 1 }, 0.20, Enum.EasingStyle.Quint)
 		task.delay(0.22, function() SG:Destroy() end)
-	end)
+	end
 
 	local function LoadGame(tier)
 		tier = tier or "Premium"
@@ -647,7 +640,7 @@ local function ShowKeyUI()
 			AnimateClose()
 			submitting = false
 		end)
-	end)
+	end
 
 	local BtnY = 202
 	local BtnH = 30
@@ -691,7 +684,7 @@ local function ShowKeyUI()
 			cb()
 		end)
 		return btn
-	end)
+	end
 
 	MakeBtn("Free Version", RX, BtnW, Color3.fromRGB(45, 20, 85), Color3.fromRGB(200, 165, 255), function()
 		LoadGame("Free")
@@ -747,7 +740,7 @@ local function ShowKeyUI()
 			end)
 		end)
 		return btn
-	end)
+	end
 
 	MakeOptionBtn("Lootlabs", 4, API_CONFIG.KEY_LINKS.Lootlabs, "Copied link!")
 	MakeOptionBtn("Linkvertise", 38, API_CONFIG.KEY_LINKS.Linkvertise, "Copied link!")
@@ -786,4 +779,30 @@ local function ShowKeyUI()
 end
 
 -- Abre a UI ao carregar o script
-ShowKeyUI()
+local ok, err = pcall(function()
+	ShowKeyUI()
+end)
+if not ok then
+	print("[Quantum Onyx] ERRO: " .. tostring(err))
+	local eSG = Instance.new("ScreenGui")
+	eSG.Name = "KL_ErrGui"
+	eSG.ResetOnSpawn = false
+	eSG.Parent = game:GetService("CoreGui")
+	local eF = Instance.new("Frame")
+	eF.BackgroundColor3 = Color3.fromRGB(160, 30, 60)
+	eF.Size = UDim2.fromOffset(640, 140)
+	eF.Position = UDim2.new(0.5, -320, 0.4, 0)
+	local eC = Instance.new("UICorner")
+	eC.CornerRadius = UDim.new(0, 10)
+	eC.Parent = eF
+	local eT = Instance.new("TextLabel")
+	eT.Text = "ERRO: " .. tostring(err)
+	eT.TextColor3 = Color3.new(1, 1, 1)
+	eT.TextSize = 16
+	eT.Font = Enum.Font.RobotoCondensedBold
+	eT.BackgroundTransparency = 1
+	eT.XPadding = 14
+	eT.YPadding = 14
+	eT.Size = UDim2.new(1, 0, 1, 0)
+	eT.Parent = eF
+end
