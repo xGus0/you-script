@@ -275,7 +275,7 @@ local function ShowKeyUI()
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
 				Font = Enum.Font.GothamBold,
-				Text = "Keyless",
+				Text = "NO KEY",
 				TextColor3 = Color3.fromRGB(130, 235, 160),
 				TextSize = 10,
 				TextXAlignment = Enum.TextXAlignment.Center,
@@ -546,7 +546,7 @@ local function ShowKeyUI()
 		Position = UDim2.new(0, 25, 0, 0),
 		Size = UDim2.new(1, -30, 1, 0),
 		Font = Enum.Font.GothamBold,
-		Text = "Keyless — load anytime",
+		Text = "Premium — sem key (nada pra digitar)",
 		TextColor3 = Color3.fromRGB(180, 160, 225),
 		TextSize = 10,
 		TextXAlignment = Enum.TextXAlignment.Left,
@@ -554,50 +554,12 @@ local function ShowKeyUI()
 		Parent = LRMBar
 	})
 
-	local InputBg = New("Frame", {
-		BackgroundColor3 = Color3.fromRGB(10, 8, 18),
-		BackgroundTransparency = 0,
-		BorderSizePixel = 0,
-		Position = UDim2.new(0, RX, 0, 146),
-		Size = UDim2.new(0, RW, 0, 34),
-		ZIndex = 202,
-		Parent = Card,
-		Children = {
-			New("UICorner", { CornerRadius = UDim.new(0, 7) }),
-			New("UIStroke", { Color = Color3.fromRGB(120, 60, 220), Transparency = 0.3, Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
-		}
-	})
-	New("ImageLabel", {
-		BackgroundTransparency = 1,
-		Position = UDim2.new(0, 10, 0.5, -7),
-		Size = UDim2.new(0, 14, 0, 14),
-		Image = "rbxassetid://7733992528",
-		ImageColor3 = Color3.fromRGB(140, 90, 215),
-		ZIndex = 203,
-		Parent = InputBg
-	})
-	local KeyInput = New("TextBox", {
-		BackgroundTransparency = 1,
-		Position = UDim2.new(0, 30, 0, 0),
-		Size = UDim2.new(1, -38, 1, 0),
-		Font = Enum.Font.GothamBold,
-		PlaceholderText = "Optional key (if you have one)...",
-		PlaceholderColor3 = Color3.fromRGB(110, 85, 155),
-		-- Text = LoadSavedKey(),
-		TextColor3 = Color3.fromRGB(225, 205, 255),
-		TextSize = 11,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		ClearTextOnFocus = false,
-		ZIndex = 203,
-		Parent = InputBg
-	})
-
 	local StatusLabel = New("TextLabel", {
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, RX, 0, 185),
 		Size = UDim2.new(0, RW, 0, 13),
 		Font = Enum.Font.GothamBold,
-		Text = "HWID: " .. GetHWID():sub(1, 12) .. "...",
+		Text = "Premium — sem key (nada pra digitar)",
 		TextColor3 = Color3.fromRGB(175, 155, 210),
 		TextSize = 9,
 		TextXAlignment = Enum.TextXAlignment.Center,
@@ -647,13 +609,13 @@ local function ShowKeyUI()
 	local BtnGap = 6
 	local BtnW = math.floor((RW - BtnGap * 2) / 3)
 
-	local function MakeBtn(label, px, w, bg, tc, cb)
+	local function MakeBtn(label, px, w, y, h, bg, tc, cb)
 		local btn = New("TextButton", {
 			BackgroundColor3 = bg,
 			BackgroundTransparency = 0,
 			BorderSizePixel = 0,
-			Position = UDim2.new(0, px, 0, BtnY),
-			Size = UDim2.new(0, w, 0, BtnH),
+			Position = UDim2.new(0, px, 0, y),
+			Size = UDim2.new(0, w, 0, h),
 			AutoButtonColor = false,
 			Text = "",
 			ClipsDescendants = true,
@@ -686,94 +648,15 @@ local function ShowKeyUI()
 		return btn
 	end
 
-	MakeBtn("Free Version", RX, BtnW, Color3.fromRGB(45, 20, 85), Color3.fromRGB(200, 165, 255), function()
-		LoadGame("Free")
-	end)
-
-	local panelOpen = false
-	local OptionPanel = New("Frame", {
-		BackgroundColor3 = Color3.fromRGB(15, 12, 24),
-		BackgroundTransparency = 0,
-		BorderSizePixel = 0,
-		Position = UDim2.new(0, RX + BtnW + BtnGap, 0, BtnY - 78),
-		Size = UDim2.new(0, BtnW, 0, 72),
-		ZIndex = 215,
-		Visible = false,
-		ClipsDescendants = false,
-		Parent = Card,
-		Children = {
-			New("UICorner", { CornerRadius = UDim.new(0, 7) }),
-			New("UIStroke", {
-				Color = Color3.fromRGB(120, 60, 220),
-				Transparency = 0.3,
-				Thickness = 1,
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-			}),
-		}
-	})
-
-	local function MakeOptionBtn(label, yPos, link, statusMsg)
-		local btn = New("TextButton", {
-			BackgroundColor3 = Color3.fromRGB(40, 20, 80),
-			BackgroundTransparency = 0,
-			BorderSizePixel = 0,
-			Position = UDim2.new(0, 4, 0, yPos),
-			Size = UDim2.new(1, -8, 0, 30),
-			AutoButtonColor = false,
-			Text = label,
-			Font = Enum.Font.GothamBold,
-			TextColor3 = Color3.fromRGB(210, 185, 255),
-			TextSize = 11,
-			ZIndex = 216,
-			Parent = OptionPanel,
-			Children = { New("UICorner", { CornerRadius = UDim.new(0, 5) }) }
-		})
-		btn.MouseEnter:Connect(function() Tween(btn, { BackgroundColor3 = Color3.fromRGB(60, 30, 110) }, 0.10) end)
-		btn.MouseLeave:Connect(function() Tween(btn, { BackgroundColor3 = Color3.fromRGB(40, 20, 80) }, 0.12) end)
-		btn.MouseButton1Click:Connect(function()
-			CircleRipple(btn, Mouse.X, Mouse.Y)
-			pcall(function() (setclipboard or toclipboard)(link) end)
-			SetStatus(statusMsg, Color3.fromRGB(105, 195, 255))
-			task.delay(0.12, function()
-				panelOpen = false
-				OptionPanel.Visible = false
-			end)
-		end)
-		return btn
-	end
-
-	MakeOptionBtn("Lootlabs", 4, API_CONFIG.KEY_LINKS.Lootlabs, "Copied link!")
-	MakeOptionBtn("Linkvertise", 38, API_CONFIG.KEY_LINKS.Linkvertise, "Copied link!")
-
-	local getKeyBtn = MakeBtn("Get Key", RX + BtnW + BtnGap, BtnW, Color3.fromRGB(20, 45, 90), Color3.fromRGB(130, 195, 255), function()
-		panelOpen = not panelOpen
-		OptionPanel.Visible = panelOpen
-	end)
-
-	UserInputService.InputBegan:Connect(function(input)
-		if not panelOpen then return end
-		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and
-			input.UserInputType ~= Enum.UserInputType.Touch then return end
-		local pos = input.Position
-		local ap, as = OptionPanel.AbsolutePosition, OptionPanel.AbsoluteSize
-		local gkp, gks = getKeyBtn.AbsolutePosition, getKeyBtn.AbsoluteSize
-		local onPanel = pos.X >= ap.X and pos.X <= ap.X + as.X and pos.Y >= ap.Y and pos.Y <= ap.Y + as.Y
-		local onBtn = pos.X >= gkp.X and pos.X <= gkp.X + gks.X and pos.Y >= gkp.Y and pos.Y <= gkp.Y + gks.Y
-		if not onPanel and not onBtn then
-			panelOpen = false
-			OptionPanel.Visible = false
-		end
-	end)
-
-	MakeBtn("Load Game", RX + (BtnW + BtnGap) * 2, BtnW, Color3.fromRGB(65, 25, 130), Color3.fromRGB(225, 180, 255), function()
+	MakeBtn("START", RX, RW, 202, 46, Color3.fromRGB(18, 40, 22), Color3.fromRGB(130, 235, 160), function()
 		LoadGame("Premium")
 	end)
 
-	KeyInput.FocusLost:Connect(function(enterPressed)
-		if enterPressed then LoadGame("Premium") end
+	MakeBtn("Free Version", RX, RW, 258, 28, Color3.fromRGB(35, 30, 55), Color3.fromRGB(190, 190, 220), function()
+		LoadGame("Free")
 	end)
 
-	Notify("GussScripterX", "Modo Keyless ativo. Press Load Game para carregar.", Color3.fromRGB(130, 235, 160))
+	Notify("GussScripterX", "Premium, sem key. Press START.", Color3.fromRGB(130, 235, 160))
 	-- Auto-abre a UI
 	-- (ou o player pode carregar manualmente)
 end
